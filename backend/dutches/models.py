@@ -22,6 +22,9 @@ class Dutch(models.Model):
     )
     sku = models.CharField(max_length=255, blank=True, null=True)
 
+    def __str__(self):
+        return self.user.get_username() + "'s " + self.stuff_name
+
     def save(self, *args, **kwargs):
         if not self.sku:
             self.sku = secrets.token_urlsafe(nbytes=12)
