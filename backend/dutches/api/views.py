@@ -62,6 +62,19 @@ class DutchViewSet(viewsets.ModelViewSet):
             code = status.HTTP_400_BAD_REQUEST
         return Response(data=response, status=code)
 
+    def create(self, request, *args, **kwargs):
+        payload = request.data
+        serializer = self.get_serializer_class()
+        serializer = serializer(data=payload)
+        if serializer.is_valid():
+            serializer.create(request.user, serializer.validated_data)
+            response = {"message": "dutch added successfully!", "data": serializer.data}
+            code = status.HTTP_201_CREATED
+        else:
+            response = {"message": "something went wrong!", "errors": serializer.errors}
+            code = status.HTTP_406_NOT_ACCEPTABLE
+        return Response(data=response, status=code)
+
     def destroy(self, request, *args, **kwargs):
         dutch = self.get_object(*args, **kwargs)
         dutch.delete()
