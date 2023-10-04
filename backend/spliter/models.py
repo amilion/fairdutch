@@ -32,7 +32,13 @@ class Split(models.Model):
     sku = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self) -> str:
-        return self.debtor() + " --> " + self.creditor() + " : " + str(self.amount)
+        return (
+            self.debtor.username
+            + " --> "
+            + self.creditor.username
+            + " : "
+            + str(self.amount)
+        )
 
     def save(self, *args, **kwargs) -> None:
         if not self.sku:
